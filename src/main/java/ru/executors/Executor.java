@@ -8,7 +8,7 @@ import java.io.*;
  *
  */
 public abstract class Executor {
-    private static boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
+    private static boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("win");
 
     public Executor() {}
 
