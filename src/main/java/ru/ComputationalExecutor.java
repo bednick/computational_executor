@@ -77,8 +77,6 @@ public class ComputationalExecutor {
     private static File build(CommandBuild commandBuild) throws IOException {
         // TODO add check(), (нужно ли собирать)
         Preprocessor preprocessor = new Preprocessor();
-//        File correctFile = preprocessor.process(commandBuild.getDelegate().getFile());
-//        return correctFile;
         return preprocessor.process(commandBuild.getDelegate().getFile());
     }
 }
