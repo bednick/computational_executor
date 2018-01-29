@@ -3,39 +3,37 @@ package ru.preprocessor;
 import ru.bricks.Pair;
 
 import java.io.BufferedReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  *
  */
 class LinesDefine extends ILinesReader {
-    private final String DEFINE = "#define ";
-    private List<Pair<String, String>> defines;
+    private Map<String, String> defines;
 
     public LinesDefine() {
-        defines = new ArrayList<>();
+        defines = new HashMap<>();
     }
 
     @Override
     public boolean isRead(String line) {
-        return line.startsWith(DEFINE);
+        return line.startsWith("#define ");
     }
 
     @Override
     public List<String> read(BufferedReader reader, String thisLine) {
         String[] def = thisLine.split(" ", 3);
-        defines.add(new Pair<>(def[1], def[2]));
+        defines.put(def[1], def[2]);
         return new ArrayList<>(0);
     }
 
     @Override
-    public boolean isReplace(String line) {
-        return line.contains("%") && line.contains("define");
+    List<String> modify(String line) {
+        return Collections.singletonList(patternReplace(line, "define"));
     }
 
     @Override
-    public String replace(String line) {
-        return line;
+    protected String replace(String[] args) {
+        return defines.get(args[1]);
     }
 }

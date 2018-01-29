@@ -5,9 +5,9 @@ import com.beust.jcommander.ParameterException;
 import ru.bricks.ConnectionsGraph;
 import ru.commandline.CommandBuild;
 import ru.commandline.CommandRun;
-import ru.parser.IParser;
-import ru.parser.Parser;
-import ru.preprocessor.Preprocessor;
+import ru.parser.Parser_v1;
+import ru.parser.Selecting;
+import ru.preprocessor.Preprocessor_v1;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -70,13 +70,16 @@ public class ComputationalExecutor {
     private static void run(CommandRun commandRun) throws IOException {
         File correct = build(new CommandBuild(commandRun.getDelegate()));
         List<String> outStates = commandRun.getOutStates();
-        ConnectionsGraph connectionsGraph = new Parser().process(new FileInputStream(correct), outStates);
+        Selecting selecting = new Selecting();
+
+        ConnectionsGraph connectionsGraph = selecting.select(new FileInputStream(correct))
+                .process(new FileInputStream(correct), outStates);
 
     }
 
     private static File build(CommandBuild commandBuild) throws IOException {
         // TODO add check(), (нужно ли собирать)
-        Preprocessor preprocessor = new Preprocessor();
+        Preprocessor_v1 preprocessor = new Preprocessor_v1();
         return preprocessor.process(commandBuild.getDelegate().getFile());
     }
 }

@@ -19,7 +19,17 @@ public class Local extends Executor {
     }
 
     @Override
-    public boolean isAvailable() {
-        return true;
+    protected boolean available() {
+        return false;
+    }
+
+    @Override
+    protected float confidence() {
+        return 1;
+    }
+
+    @Override
+    protected float overheads() {
+        return 1;
     }
 }

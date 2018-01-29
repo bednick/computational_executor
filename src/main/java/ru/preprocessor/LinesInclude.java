@@ -9,6 +9,7 @@ import java.util.List;
  *
  */
 class LinesInclude extends ILinesReader {
+
     @Override
     public boolean isRead(String line) {
         return line.startsWith("#include ");
@@ -16,16 +17,18 @@ class LinesInclude extends ILinesReader {
 
     @Override
     public List<String> read(BufferedReader reader, String thisLine) {
+        // TODO Включть файл ? (Проверить что он есть)
         return Collections.singletonList(thisLine);
     }
 
     @Override
-    public boolean isReplace(String line) {
-        return true;
+    List<String> modify(String line) {
+        return Collections.singletonList(patternReplace(line, "include"));
     }
 
     @Override
-    public String replace(String line) {
-        return line;
+    protected String replace(String[] args) {
+        // TODO Запомнить, какой файл включаем ()
+        return String.format("%s::%s", args[1], args[2]);
     }
 }

@@ -6,16 +6,16 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
-import java.util.stream.Collectors;
 
-public class Preprocessor implements IPreprocessor {
+public class Preprocessor_v1 implements IPreprocessor {
     private final String EXTENSION_IN = ".cm";
     private final String EXTENSION_OUT = ".cmc";
 
     private List<ILinesReader> modules;
 
-    public Preprocessor() {
+    public Preprocessor_v1() {
         modules = Arrays.asList(
+                new LineVersion(),
                 new LinesDefine(),
                 new LinesFor(),
                 new LinesInclude(),
@@ -34,14 +34,18 @@ public class Preprocessor implements IPreprocessor {
 
     @Override
     public File process(File file) throws IOException {
-        BufferedReader reader = new BufferedReader(
+        BufferedReader resource = new BufferedReader(
                 new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8));
+        ILinesReader reader = modules.get(0);
+
         List<String> lines = new ArrayList<String>();
         // todo check, подумать над считыванием
         String thisLine;
-        while ((thisLine = modules.get(0).readLine(reader)) != null) {
-            for (String line: getLinesReader(thisLine).read(reader, thisLine)) {
-                lines.add(preparation(line));
+
+        while ((thisLine = reader.readLine(resource)) != null) {
+
+            for (String line: getLinesReader(thisLine).read(resource, thisLine)) {
+                lines.addAll(preparation(line));
             }
         }
 
@@ -63,12 +67,16 @@ public class Preprocessor implements IPreprocessor {
         throw new RuntimeException("Incorrect lines readers, or incorrect file");
     }
 
-    private String preparation(String line) {
+    private List<String> preparation(String line) {
+        List<String> all = new ArrayList<>();
+        all.add(line);
         for (ILinesReader module: modules) {
-            if (module.isReplace(line)) {
-                line = module.replace(line);
+            List<String> res = new ArrayList<>();
+            for (String str: all) {
+                res.addAll(module.modify(str));
             }
+            all.addAll(res);
         }
-        return line;
+        return all;
     }
 }

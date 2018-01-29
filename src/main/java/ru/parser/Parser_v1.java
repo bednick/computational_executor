@@ -8,7 +8,9 @@ import java.util.List;
 /**
  *
  */
-public class Parser implements IParser {
+public class Parser_v1 implements IParser {
+
+    Parser_v1() {}
 
     @Override
     public ConnectionsGraph process(InputStream stream, List<String> outStates) {
