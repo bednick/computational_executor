@@ -1,7 +1,7 @@
 package ru.executors;
 
 
-import ru.bricks.Command;
+import ru.bricks.command.Command;
 
 import java.io.*;
 

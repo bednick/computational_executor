@@ -1,6 +1,6 @@
 package ru.executors;
 
-import ru.bricks.ICommand;
+import ru.bricks.command.ICommand;
 
 import java.io.IOException;
 

@@ -1,7 +1,6 @@
-package ru.bricks;
+package ru.bricks.command;
 
 import ru.executors.ExecutorCommand;
-import ru.executors.IExecutor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,17 +35,6 @@ public class Command implements ICommand<ExecutorCommand> {
             return null;
         }
         return marks.get(name);
-    }
-
-    public int getMarkOrDefault(String name, int def) {
-        if (marks == null) {
-            return def;
-        }
-        String rez = marks.get(name);
-        if (rez == null) {
-            return def;
-        }
-        return Integer.parseInt(rez);
     }
 
     @Override

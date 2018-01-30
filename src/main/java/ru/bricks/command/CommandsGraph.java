@@ -1,5 +1,6 @@
-package ru.bricks;
+package ru.bricks.command;
 
+import ru.bricks.ConnectionsGraph;
 import ru.executors.ExecutorGraph;
 
 import java.util.HashMap;

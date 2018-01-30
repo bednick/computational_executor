@@ -1,4 +1,4 @@
-package ru.bricks;
+package ru.bricks.state;
 
 /**
  *

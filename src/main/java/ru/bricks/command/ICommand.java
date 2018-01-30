@@ -1,8 +1,6 @@
-package ru.bricks;
+package ru.bricks.command;
 
 import ru.executors.IExecutor;
-
-import java.util.HashMap;
 
 public interface ICommand<T extends IExecutor> {
     T getExecutor();

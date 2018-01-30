@@ -1,5 +1,8 @@
 package ru.bricks;
 
+import ru.bricks.command.ICommand;
+import ru.bricks.state.State;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;

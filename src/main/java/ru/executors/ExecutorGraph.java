@@ -1,6 +1,6 @@
 package ru.executors;
 
-import ru.bricks.CommandsGraph;
+import ru.bricks.command.CommandsGraph;
 
 import java.io.IOException;
 
@@ -16,6 +16,7 @@ public class ExecutorGraph implements IExecutor<CommandsGraph> {
 
     @Override
     public boolean isAvailable() {
+
         return true;
     }
 
