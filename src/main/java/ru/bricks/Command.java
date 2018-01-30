@@ -1,6 +1,7 @@
 package ru.bricks;
 
-import ru.executors.Executor;
+import ru.executors.ExecutorCommand;
+import ru.executors.IExecutor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,22 +9,19 @@ import java.util.Map;
 /**
  *
  */
-public class Command {
-    private Executor executor;
+
+public class Command implements ICommand<ExecutorCommand> {
+    private ExecutorCommand executor;
     private String command;
     private Map<String, String> marks = null;
 
-    public Command(final String command, final Executor executor) {
+    public Command(final String command, final ExecutorCommand executor) {
         this.command = command;
         this.executor = executor;
     }
 
     public String getCommand() {
         return command;
-    }
-
-    public void setCommand(String command) {
-        this.command = command;
     }
 
     public void addMark(String name, String value) {
@@ -51,10 +49,6 @@ public class Command {
         return Integer.parseInt(rez);
     }
 
-    public Executor getExecutor() {
-        return executor;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -70,5 +64,10 @@ public class Command {
     @Override
     public int hashCode() {
         return command.hashCode();
+    }
+
+    @Override
+    public ExecutorCommand getExecutor() {
+        return executor;
     }
 }

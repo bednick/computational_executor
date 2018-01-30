@@ -13,9 +13,9 @@ public class ConnectionsGraph {
     private Set<Vertex<State>> rootStates;
     private Set<Vertex<State>> leafStates;
 
-    private Map<Command, Vertex<Command>> commands;
-    private Set<Vertex<Command>> rootCommands;
-    private Set<Vertex<Command>> leafCommands;
+    private Map<ICommand, Vertex<ICommand>> commands;
+    private Set<Vertex<ICommand>> rootCommands;
+    private Set<Vertex<ICommand>> leafCommands;
 
     public ConnectionsGraph() {
         this.states = new HashMap<>();
@@ -37,24 +37,24 @@ public class ConnectionsGraph {
         leafStates.add(vertex);
     }
 
-    public void addCommand(Command command) {
+    public void addCommand(ICommand command) {
         if (commands.containsKey(command)) {
             return;
         }
-        Vertex<Command> vertex = new Vertex<>(command);
+        Vertex<ICommand> vertex = new Vertex<>(command);
         commands.put(command, vertex);
         rootCommands.add(vertex);
         leafCommands.add(vertex);
     }
 
-    public void addEdge(Set<State> in, Set<State> out, Command command) {
+    public void addEdge(Set<State> in, Set<State> out, ICommand command) {
         addEdges(in, command);
         addEdges(command, out);
     }
 
-    public void addEdges(Set<State> in, Command command) {
+    public void addEdges(Set<State> in, ICommand command) {
         addCommand(command);
-        Vertex<Command> com = commands.get(command);
+        Vertex<ICommand> com = commands.get(command);
 
         for (State state: in) {
             addState(state);
@@ -66,9 +66,9 @@ public class ConnectionsGraph {
         }
     }
 
-    public void addEdges(Command command, Set<State> out) {
+    public void addEdges(ICommand command, Set<State> out) {
         addCommand(command);
-        Vertex<Command> com = commands.get(command);
+        Vertex<ICommand> com = commands.get(command);
 
         for (State state: out) {
             addState(state);
@@ -85,7 +85,7 @@ public class ConnectionsGraph {
         return states.get(state);
     }
 
-    public Vertex<Command> getVertexCommand(Command command) {
+    public Vertex<ICommand> getVertexCommand(ICommand command) {
         return commands.get(command);
     }
 
@@ -97,11 +97,11 @@ public class ConnectionsGraph {
         return leafStates;
     }
 
-    public Set<Vertex<Command>> getRootCommands() {
+    public Set<Vertex<ICommand>> getRootCommands() {
         return rootCommands;
     }
 
-    public Set<Vertex<Command>> getLeafCommands() {
+    public Set<Vertex<ICommand>> getLeafCommands() {
         return leafCommands;
     }
 }

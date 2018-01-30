@@ -15,7 +15,7 @@ class LinesExecutor extends ILinesReader {
     private boolean def;
 
     public LinesExecutor() {
-        lastExecutor = new Pair<>("Local", "localhost");
+        lastExecutor = new Pair<>("ExecutorCommandLocal", "localhost");
         def = true;
     }
 

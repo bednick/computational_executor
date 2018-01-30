@@ -24,7 +24,7 @@ public class ComputationalExecutor {
                 .addObject(commandRun)
                 .addObject(commandBuild)
                 .build();
-        jCommander.setProgramName("Computational Executor");
+        jCommander.setProgramName("Computational ExecutorCommand");
         jCommander.setCaseSensitiveOptions(false);
         jCommander.setAllowAbbreviatedOptions(true);
 

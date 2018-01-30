@@ -5,7 +5,7 @@ import java.io.IOException;
 /**
  *
  */
-public class Local extends Executor {
+public class ExecutorCommandLocal extends ExecutorCommand {
     @Override
     protected Process sh(String command) throws IOException {
         ProcessBuilder processBuilder = new ProcessBuilder("sh", "-c", command);
@@ -19,17 +19,17 @@ public class Local extends Executor {
     }
 
     @Override
-    protected boolean available() {
+    public boolean isAvailable() {
         return false;
     }
 
     @Override
-    protected float confidence() {
+    public float confidence() {
         return 1;
     }
 
     @Override
-    protected float overheads() {
+    public float overheads() {
         return 1;
     }
 }
