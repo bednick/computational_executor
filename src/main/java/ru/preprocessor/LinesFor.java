@@ -48,12 +48,15 @@ class LinesFor extends ILinesReader {
                 is_exec = false;
             }
         }
+        if (lines.isEmpty()) {
+            lines.add(line);
+        }
         return lines;
     }
 
     @Override
-    protected String replace(String[] args) {
-        if (replace.getKey().equals(args[1])) {
+    protected String replace(List<String> args) {
+        if (replace.getKey().equals(args.get(1))) {
             is_exec = true;
             return replace.getValue();
         } else {

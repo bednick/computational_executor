@@ -12,14 +12,16 @@ import java.util.List;
  */
 class LinesExecutor extends ILinesReader {
     private Pair<String, String> lastExecutor;
+    private boolean def;
 
     public LinesExecutor() {
-        lastExecutor = new Pair<>("Local", "executor");
+        lastExecutor = new Pair<>("Local", "localhost");
+        def = true;
     }
 
     @Override
     public boolean isRead(String line) {
-        return line.startsWith("@");
+        return line.startsWith("#exec ");
     }
 
     @Override
@@ -29,13 +31,15 @@ class LinesExecutor extends ILinesReader {
 
     @Override
     List<String> modify(String line) {
-        String res;
-        if(line.contains("#")) {
-            res =  String.format("%s exec=%s,%s", line, lastExecutor.getKey(), lastExecutor.getValue());
-        } else {
-            res = String.format("%s # exec=%s,%s", line, lastExecutor.getKey(), lastExecutor.getValue());
+        if (def) {
+            return Collections.singletonList(line);
         }
-        return Collections.singletonList(res);
+        if(line.contains("#")) {
+            line =  String.format("%s exec=%s,%s", line, lastExecutor.getKey(), lastExecutor.getValue());
+        } else {
+            line = String.format("%s # exec=%s,%s", line, lastExecutor.getKey(), lastExecutor.getValue());
+        }
+        return Collections.singletonList(line);
     }
 
 }

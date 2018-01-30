@@ -25,7 +25,7 @@ public class LineVersion extends ILinesReader {
     }
 
     @Override
-    protected String replace(String[] args) {
+    protected String replace(List<String> args) {
         return null;
     }
 

@@ -27,8 +27,8 @@ class LinesInclude extends ILinesReader {
     }
 
     @Override
-    protected String replace(String[] args) {
+    protected String replace(List<String> args) {
         // TODO Запомнить, какой файл включаем ()
-        return String.format("%s::%s", args[1], args[2]);
+        return String.format("%s::%s", args.get(1), args.get(2));
     }
 }

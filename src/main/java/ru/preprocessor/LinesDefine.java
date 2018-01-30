@@ -33,7 +33,7 @@ class LinesDefine extends ILinesReader {
     }
 
     @Override
-    protected String replace(String[] args) {
-        return defines.get(args[1]);
+    protected String replace(List<String> args) {
+        return defines.get(args.get(1));
     }
 }

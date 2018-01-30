@@ -43,7 +43,9 @@ public class Preprocessor_v1 implements IPreprocessor {
         String thisLine;
 
         while ((thisLine = reader.readLine(resource)) != null) {
-
+            if (thisLine.startsWith("##") || thisLine.isEmpty()) {
+                continue;
+            }
             for (String line: getLinesReader(thisLine).read(resource, thisLine)) {
                 lines.addAll(preparation(line));
             }
@@ -70,13 +72,24 @@ public class Preprocessor_v1 implements IPreprocessor {
     private List<String> preparation(String line) {
         List<String> all = new ArrayList<>();
         all.add(line);
+//        while (!all.isEmpty()) {
+//            String str = all.pop();
         for (ILinesReader module: modules) {
             List<String> res = new ArrayList<>();
             for (String str: all) {
                 res.addAll(module.modify(str));
             }
-            all.addAll(res);
+            all = res;
         }
+        //}
         return all;
+    }
+
+    public static void main(String[] args) throws IOException {
+        IPreprocessor preprocessor = new Preprocessor_v1();
+        File file = new File("test_preprocessor.cm");
+        System.out.println(file.getAbsolutePath());
+        System.out.println(file.exists());
+        preprocessor.process(file);
     }
 }
