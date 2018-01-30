@@ -1,15 +1,16 @@
 package ru.preprocessor;
 
+import ru.commandline.FileConverter;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 public class Preprocessor_v1 implements IPreprocessor {
-    private final String EXTENSION_IN = ".cm";
-    private final String EXTENSION_OUT = ".cmc";
 
     private List<ILinesReader> modules;
 
@@ -17,8 +18,8 @@ public class Preprocessor_v1 implements IPreprocessor {
         modules = Arrays.asList(
                 new LineVersion(),
                 new LinesDefine(),
-                new LinesFor(),
                 new LinesInclude(),
+                new LinesFor(),
                 new LinesExecutor(),
                 new LinesData()
         );
@@ -26,10 +27,10 @@ public class Preprocessor_v1 implements IPreprocessor {
 
     private String getNewName(String oldName) {
         String name = oldName;
-        if(name.endsWith(EXTENSION_IN)) {
-            name = name.substring(0, name.lastIndexOf(EXTENSION_IN));
+        if(name.endsWith(".cm")) {
+            name = name.substring(0, name.lastIndexOf(".cm"));
         }
-        return name + EXTENSION_OUT;
+        return String.format("%s%s", name, ".cmc");
     }
 
     @Override
@@ -38,22 +39,49 @@ public class Preprocessor_v1 implements IPreprocessor {
                 new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8));
         ILinesReader reader = modules.get(0);
 
-        List<String> lines = new ArrayList<String>();
+        String version = "#version 1.0";
+        LinkedList<String> includes = new LinkedList<>();
+        LinkedList<String> lines = new LinkedList<>();
         // todo check, подумать над считыванием
         String thisLine;
-
+        boolean comments = false;
         while ((thisLine = reader.readLine(resource)) != null) {
-            if (thisLine.startsWith("##") || thisLine.isEmpty()) {
+            if (thisLine.startsWith("###")) {
+                comments = !comments;
+            }
+            if (comments || thisLine.startsWith("##") || thisLine.isEmpty()) {
                 continue;
             }
             for (String line: getLinesReader(thisLine).read(resource, thisLine)) {
-                lines.addAll(preparation(line));
+                Collection<String> res = preparation(line);
+                for (String str: res) {
+                    if (str.startsWith("#ver")) {
+                        System.out.println("new version:" + str);
+                        version = str;
+                        continue;
+                    }
+                    if (str.startsWith("#inc")) {
+                        System.out.println("new include:" + str);
+                        includes.add(str);
+                        continue;
+                    }
+                    lines.add(str);
+                }
+                //lines.addAll(res);
             }
         }
 
         if (!lines.isEmpty()) {
-            Files.write(Paths.get(getNewName(file.getName())), lines, StandardOpenOption.CREATE);
-            return new File(getNewName(file.getName()));
+            List<String> res = new LinkedList<>();
+            res.add(version);
+            res.add("");
+            res.addAll(includes);
+            res.add("");
+            res.addAll(lines);
+
+            Path p = Paths.get(getNewName(file.getName()));
+            Files.write(p, res, StandardOpenOption.CREATE);
+            return p.toFile();
         }
         // todo throw file is empty?
         return null;

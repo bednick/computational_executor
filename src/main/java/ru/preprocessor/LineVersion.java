@@ -16,7 +16,7 @@ public class LineVersion extends ILinesReader {
 
     @Override
     public List<String> read(BufferedReader reader, String thisLine) {
-        return new ArrayList<>(0);
+        return Collections.singletonList(thisLine);
     }
 
     @Override

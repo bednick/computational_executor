@@ -41,24 +41,30 @@ abstract class ILinesReader {
 
     abstract List<String> modify(String line);
 
-    protected String patternReplace(String line, String name) {
+    protected String patternReplace(String line, String name, int from) {
         // todo вынести в init
-        String pattern = "%[\\s]*?\\{[\\s]*?\\[[\\s]*?"+name+"[\\s]*?\\][\\s]*?[^\\}]*?\\}";
+
+        String pattern = "%[\\s]*?\\{[\\s]*?\\[[\\s]*?"+name+"[\\s]*?\\][\\s\\S]*?\\}";
+
         Pattern p = Pattern.compile(pattern);
         Matcher m = p.matcher(line);
-        if (m.find()) {
-            String substring = line.substring(m.start(), m.end());
-            return patternReplace(
-                    line.replace(substring, replace(parsing(substring))),
-                    name
-            );
-        }
-        return line;
+
+        do {
+            if (!m.find()) {
+                return line;
+            }
+        } while (from > m.start());
+
+        String substring = line.substring(m.start(), m.end());
+        return patternReplace(
+                line.replace(substring, replace(parsing(substring))),
+                name,
+                m.start()+1
+        );
     }
 
     protected String replace(List<String> args) {
-        // TODO Exception not implements
-        return args.get(0);
+        throw new RuntimeException("not implements replace");
     }
 
     protected List<String> parsing(String substring) {
@@ -69,7 +75,7 @@ abstract class ILinesReader {
                     substring.indexOf('[', from)+1,
                     substring.indexOf(']', from)
             );
-            args.add(str);
+            args.add(str.trim());
             from = substring.indexOf(']', from)+1;
         }
         return args;

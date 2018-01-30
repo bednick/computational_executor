@@ -5,6 +5,7 @@ import ru.bricks.Pair;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -28,7 +29,8 @@ class LinesFor extends ILinesReader {
         if (thisLine.startsWith("#for")) {
             String all = thisLine.substring(4, thisLine.lastIndexOf(':'));
             String[] spl = all.split("#in", 2);
-            queuesFor.add(0, new Pair<>(spl[0].trim(), new LinkedList<>(Arrays.asList(spl[1].split(",")))));
+            queuesFor.add(0, new Pair<>(spl[0].trim(),
+                    Arrays.stream(spl[1].split(",")).map(String::trim).collect(Collectors.toList())));
         } else {
             queuesFor.remove(0);
         }
@@ -41,7 +43,7 @@ class LinesFor extends ILinesReader {
         for (Pair<String, List<String>> pair: queuesFor) {
             for (String str: pair.getValue()) {
                 replace = new Pair<>(pair.getKey(), str);
-                String res = patternReplace(line, "for");
+                String res = patternReplace(line, "for", 0);
                 if (is_exec) {
                     lines.add(res);
                 }

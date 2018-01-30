@@ -17,18 +17,26 @@ class LinesInclude extends ILinesReader {
 
     @Override
     public List<String> read(BufferedReader reader, String thisLine) {
-        // TODO Включть файл ? (Проверить что он есть)
+        // TODO Включть файл ? (Проверить что он есть (скорее нет))
         return Collections.singletonList(thisLine);
     }
 
     @Override
     List<String> modify(String line) {
-        return Collections.singletonList(patternReplace(line, "include"));
+        return Collections.singletonList(patternReplace(line, "include", 0));
     }
 
     @Override
     protected String replace(List<String> args) {
-        // TODO Запомнить, какой файл включаем ()
-        return String.format("%s::%s", args.get(1), args.get(2));
+        // Нормализовать синтаксис, сделать проверки? (нет, созможно файл подстановки будет изменён позже и тп)
+        //
+        //System.out.println("    BUILD "+ Arrays.toString(args.toArray()));
+        StringBuilder builder = new StringBuilder();
+        builder.append("%{");
+        for (String str: args) {
+            builder.append('[').append(str).append(']');
+        }
+        builder.append('}');
+        return builder.toString();
     }
 }

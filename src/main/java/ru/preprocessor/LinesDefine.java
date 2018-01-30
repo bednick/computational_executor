@@ -29,7 +29,7 @@ class LinesDefine extends ILinesReader {
 
     @Override
     List<String> modify(String line) {
-        return Collections.singletonList(patternReplace(line, "define"));
+        return Collections.singletonList(patternReplace(line, "define", 0));
     }
 
     @Override
