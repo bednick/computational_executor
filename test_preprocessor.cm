@@ -40,7 +40,7 @@
 ## Подключение файла example.cm
 #include <example>
 
-%{[include][example][out ] [ PATH=./example]};out_include;echo 'include' >> out_include
+%{[include][example][out ] [ PATH=./example][ PATH2=./example2]};out_include;echo 'include' >> out_include
 
 ## Строки ВМ образуются следующим образом:
 ## <<Входные состояния, перечисленные через ','>>;<<выходные состояния, перечисленные через ','>>;<команда> # метки

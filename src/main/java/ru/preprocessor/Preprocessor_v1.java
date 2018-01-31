@@ -55,8 +55,7 @@ public class Preprocessor_v1 implements IPreprocessor {
             for (String line: getLinesReader(thisLine).read(resource, thisLine)) {
                 Collection<String> res = preparation(line);
                 for (String str: res) {
-                    if (str.startsWith("#ver")) {
-                        System.out.println("new version:" + str);
+                    if (str.startsWith("#version")) {
                         version = str;
                         continue;
                     }

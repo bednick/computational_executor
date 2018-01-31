@@ -20,7 +20,7 @@ public class ExecutorCommandLocal extends ExecutorCommand {
 
     @Override
     public boolean isAvailable() {
-        return false;
+        return true;
     }
 
     @Override

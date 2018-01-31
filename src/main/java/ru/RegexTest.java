@@ -6,13 +6,15 @@ public class RegexTest {
 
     public static void main(String args[]) {
         String text = "%{[not for][name_0]} name1 'name 2' % { [for][name_3]} %{[for][name_4]} 'name 5' %  {[for][name_6]}";
+        String test2 = "%{[include][example][out][PATH=./example]}";
         //print(text, "'[\\s\\S]*?'");
         //print(text, "'[^']*'");
         //
         //print(text, "([\\S]*)");
         //
         //print(text, "%[\\s]*?\\{[^\\}]*\\}");
-        System.out.println(replaceGlobalFor(text, "for"));
+        System.out.println(replaceGlobalFor(test2, "define"));
+        // System.out.println(replaceGlobalFor(text, "for"));
     }
 
     private static void print(String text, String pattern) {

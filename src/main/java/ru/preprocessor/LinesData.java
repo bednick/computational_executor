@@ -21,6 +21,9 @@ class LinesData extends ILinesReader {
 
     @Override
     List<String> modify(String line) {
+        if (!line.startsWith("#") && !line.contains("#")) {
+            line = String.format("%s #", line);
+        }
         return Collections.singletonList(line);
     }
 }

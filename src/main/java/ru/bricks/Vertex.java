@@ -71,4 +71,21 @@ public class Vertex<T> {
     public int hashCode() {
         return object.hashCode();
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Vertex: ").append(object.toString()).append(System.lineSeparator());
+        builder.append("    in: ");
+        for (Vertex v: in) {
+            builder.append(v.object.toString()).append(',').append(' ');
+        }
+        builder.append(System.lineSeparator());
+        builder.append("    out: ");
+        for (Vertex v: out) {
+            builder.append(v.object.toString()).append(',').append(' ');
+        }
+        builder.append(System.lineSeparator());
+        return builder.toString();
+    }
 }
