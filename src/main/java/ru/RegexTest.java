@@ -13,7 +13,7 @@ public class RegexTest {
         //print(text, "([\\S]*)");
         //
         //print(text, "%[\\s]*?\\{[^\\}]*\\}");
-        System.out.println(replaceGlobalFor(test2, "define"));
+        System.out.println(replaceGlobalFor(test2, "include"));
         // System.out.println(replaceGlobalFor(text, "for"));
     }
 

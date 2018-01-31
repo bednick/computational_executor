@@ -1,0 +1,9 @@
+#version 1.0
+
+a;hatch_a;echo "hatch" >> hatch_a
+b;hatch_b;echo "hatch" >> hatch_b
+c;hatch_c;echo "hatch" >> hatch_c
+
+a, b;hatch_a, hatch_b;echo "hatch" >> hatch_a; echo "hatch" >> hatch_b
+
+hatch_a, hatch_b, hatch_c;hatch_a_b_c; echo "hatch" >> hatch_a_b_c

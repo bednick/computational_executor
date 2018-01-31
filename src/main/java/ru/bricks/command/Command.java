@@ -58,4 +58,10 @@ public class Command implements ICommand<ExecutorCommand> {
     public ExecutorCommand getExecutor() {
         return executor;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Command: %s ", command);
+    }
+
 }

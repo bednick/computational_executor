@@ -7,7 +7,6 @@ import ru.bricks.command.ICommand;
 import ru.bricks.state.State;
 import ru.executors.ExecutorCommand;
 import ru.executors.ExecutorCommandLocal;
-import ru.executors.IExecutor;
 import ru.preprocessor.IPreprocessor;
 import ru.preprocessor.Preprocessor_v1;
 
@@ -19,7 +18,6 @@ import java.util.*;
  *
  */
 public class Parser_v1 extends Replace implements IParser {
-    // Имя дефайна,-- файл, -- название_резултата --
     private Map<String, File> include_file;
     private Map<String, Map<String, List<Map<String, String>>>> include_args;
     private IPreprocessor preprocessor;
@@ -65,17 +63,17 @@ public class Parser_v1 extends Replace implements IParser {
                 }
             }
         }
-        System.out.println("graph:RootStates:");
-        graph.getRootStates().forEach(System.out::println);
-        System.out.println();
-        System.out.println("graph:LeafStates:");
-        graph.getLeafStates().forEach(System.out::println);
-        System.out.println();
-        System.out.println("graph:RootCommands:");
-        graph.getRootCommands().forEach(System.out::println);
-        System.out.println();
-        System.out.println("graph:LeafCommands:");
-        graph.getLeafCommands().forEach(System.out::println);
+//        System.out.println("graph:RootStates:");
+//        graph.getRootStates().forEach(System.out::println);
+//        System.out.println();
+//        System.out.println("graph:LeafStates:");
+//        graph.getLeafStates().forEach(System.out::println);
+//        System.out.println();
+//        System.out.println("graph:RootCommands:");
+//        graph.getRootCommands().forEach(System.out::println);
+//        System.out.println();
+//        System.out.println("graph:LeafCommands:");
+//        graph.getLeafCommands().forEach(System.out::println);
 
         return graph;
     }
@@ -107,13 +105,7 @@ public class Parser_v1 extends Replace implements IParser {
     private void addData(String line, ConnectionsGraph graph) {
         line = patternReplace(line, "include", 0);
         String[] sp = line.split("#", 2);
-        String[] in = sp[0].split(";")[0].split(",");
-        String[] out = sp[0].split(";")[1].split(",");
-        String com = sp[0].split(";")[2].trim();
-        String[] marks = Arrays.stream(sp[1].split(" "))
-                .map(String::trim)
-                .filter(l->!l.isEmpty())
-                .toArray(String[]::new);
+        String com = sp[0].split(";", 3)[2].trim();
 //        Arrays.stream(in).forEach(System.out::println);
 //        Arrays.stream(out).forEach(System.out::println);
 //        System.out.println(command);
@@ -121,18 +113,26 @@ public class Parser_v1 extends Replace implements IParser {
 //        System.out.println();
         ICommand command = new Command(com, executor_line);
 
-        for (String str: marks) {
-            String[] name_value = str.split("=", 2);
-            command.addMark(name_value[0], name_value[1]);
-        }
+        Arrays.stream(sp[1].split(" "))
+                .map(String::trim)
+                .filter(l->!l.isEmpty())
+                .forEach(l->{
+                    String[] name_value = l.split("=", 2);
+                    command.addMark(name_value[0], name_value[1]);
+                });
+
         Set<State> states_in = new HashSet<>();
-        for (String str: in) {
-            states_in.add(new State(str));
-        }
+        Arrays.stream(sp[0].split(";", 3)[0].split(","))
+                .map(String::trim)
+                .filter(l->!l.isEmpty())
+                .forEach(l->states_in.add(new State(l)));
+
         Set<State> states_out = new HashSet<>();
-        for (String str: out) {
-            states_out.add(new State(str));
-        }
+        Arrays.stream(sp[0].split(";", 3)[1].split(","))
+                .map(String::trim)
+                .filter(l->!l.isEmpty())
+                .forEach(l->states_out.add(new State(l)));
+
         graph.addEdge(states_in, states_out, command);
     }
 
