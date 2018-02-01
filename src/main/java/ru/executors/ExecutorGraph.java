@@ -19,8 +19,6 @@ public class ExecutorGraph implements IExecutor<ConnectionsGraph> { // CommandsG
     public void exec(ConnectionsGraph commands, BlockingQueue<Pair<Command, Integer>> queue) {
         // использовать  BlockingQueue queue для запуска 1ой! таски, которая отвечает за поток
         // запускает в отдельном потоке выполнение подзадачи (так же и основной)
-        // TODO
-        IDecisionMaker decision = DecisionFactory.getDecisionMaker(commands);
         // todo
         /*
         * Ставит задачу на выполнение

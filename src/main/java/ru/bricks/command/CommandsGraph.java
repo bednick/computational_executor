@@ -1,6 +1,8 @@
 package ru.bricks.command;
 
 import ru.bricks.graph.ConnectionsGraph;
+import ru.decision.DecisionFactory;
+import ru.decision.IDecisionMaker;
 import ru.executors.ExecutorGraph;
 import ru.libra.ILibra;
 
@@ -40,6 +42,8 @@ public class CommandsGraph implements ICommand<ExecutorGraph> {
 
     @Override
     public void setWeight(ILibra libra) {
+        // TODO
+        IDecisionMaker decision = DecisionFactory.getDecisionMaker(graph);
 
     }
 
