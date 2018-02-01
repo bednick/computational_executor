@@ -2,10 +2,9 @@ package ru;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
-import ru.bricks.ConnectionsGraph;
+import ru.bricks.graph.ConnectionsGraph;
 import ru.commandline.CommandBuild;
 import ru.commandline.CommandRun;
-import ru.parser.Parser_v1;
 import ru.parser.Selecting;
 import ru.preprocessor.Preprocessor_v1;
 

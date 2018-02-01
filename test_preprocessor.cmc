@@ -1,0 +1,7 @@
+#version 1.0
+
+#include <example>
+
+;example_file.txt; echo "qwe2" >> example_file.txt #
+%{[include][example][out][PATH=./example][PATH2=./example2]};out_include;echo 'include1' >> out_include #
+%{[include][example][out][PATH=./example][PATH2=./example2]};out_include;echo 'include2' >> out_include #

@@ -1,5 +1,8 @@
 package ru;
 
+import ru.bricks.command.CommandsGraph;
+import ru.bricks.graph.ConnectionsGraph;
+import ru.executors.ExecutorGraph;
 import ru.parser.IParser;
 import ru.parser.Selecting;
 import ru.preprocessor.IPreprocessor;
@@ -15,6 +18,12 @@ public class Test_2 {
         IPreprocessor preprocessor = new Preprocessor_v1();
         File file_cmc = preprocessor.process(new File("test_2.cm"));
         IParser parser = new Selecting().select(new FileInputStream(file_cmc));
-        parser.process(new FileInputStream(file_cmc), Collections.singletonList("hatch_a_b_c"));
+        ConnectionsGraph graph = parser.process(new FileInputStream(file_cmc),
+//                Collections.singletonList("hatch_a_b_c"));
+                Collections.singletonList("hatch_d_e_f"));
+        ExecutorGraph executorGraph = new ExecutorGraph();
+        CommandsGraph commandsGraph = new CommandsGraph(graph, executorGraph);
+
+        commandsGraph.getExecutor().exec(commandsGraph);
     }
 }

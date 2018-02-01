@@ -1,6 +1,7 @@
 package ru.bricks.command;
 
 import ru.executors.ExecutorCommand;
+import ru.libra.ILibra;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +14,7 @@ public class Command implements ICommand<ExecutorCommand> {
     private ExecutorCommand executor;
     private String command;
     private Map<String, String> marks = null;
+    private float weight = 0;
 
     public Command(final String command, final ExecutorCommand executor) {
         this.command = command;
@@ -35,6 +37,16 @@ public class Command implements ICommand<ExecutorCommand> {
             return null;
         }
         return marks.get(name);
+    }
+
+    @Override
+    public void setWeight(ILibra libra) {
+        weight = libra.getWeight(this);
+    }
+
+    @Override
+    public float getWeight() {
+        return weight;
     }
 
     @Override

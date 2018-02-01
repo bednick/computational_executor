@@ -1,12 +1,9 @@
-package ru.bricks;
+package ru.bricks.graph;
 
 import ru.bricks.command.ICommand;
 import ru.bricks.state.State;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  *
@@ -84,6 +81,32 @@ public class ConnectionsGraph {
 
     }
 
+    public void addEdge(ICommand command, State state) {
+        Vertex<ICommand> vertex_command;
+        if (commands.containsKey(command)) {
+            vertex_command = commands.get(command);
+            leafCommands.remove(vertex_command);
+
+        } else {
+            vertex_command = new Vertex<>(command);
+            commands.put(command, vertex_command);
+            rootCommands.add(vertex_command);
+        }
+
+        Vertex<State> vertex_state;
+        if (states.containsKey(state)) {
+            vertex_state = states.get(state);
+            rootStates.remove(vertex_state);
+        } else {
+            vertex_state = new Vertex<>(state);
+            states.put(state, vertex_state);
+            leafStates.add(vertex_state);
+        }
+
+        vertex_command.addOut(vertex_state);
+        vertex_state.addIn(vertex_command);
+    }
+
     public Vertex<State> getVertexState(State state) {
         return states.get(state);
     }
@@ -106,5 +129,35 @@ public class ConnectionsGraph {
 
     public Set<Vertex<ICommand>> getLeafCommands() {
         return leafCommands;
+    }
+
+    public ConnectionsGraph subgraphFromLeaf(State stateLeaf) {
+        Vertex<State> leaf = getVertexState(stateLeaf);
+        Set<Vertex<ICommand>> allCommands = new HashSet<>();
+        Queue<Vertex<State>> queue = new LinkedList<>();
+        queue.add(leaf);
+
+        ConnectionsGraph subgraph = new ConnectionsGraph();
+        while (!queue.isEmpty()) {
+            Vertex<State> state = queue.poll();
+            subgraph.addState(state.getObject());
+            for (Vertex inCom: state.getIn()) {
+                if (allCommands.contains(inCom)) {
+                    continue;
+                }
+                allCommands.add(inCom);
+                subgraph.addEdge((ICommand) inCom.getObject(), state.getObject());
+                Set<State> in = new HashSet<>();
+                for (Object inState: inCom.getIn()) {
+                    Vertex<State> _in = (Vertex<State>) inState;
+                    in.add(_in.getObject());
+                    queue.add(_in);
+                }
+                subgraph.addEdges(in, (ICommand) inCom.getObject());
+            }
+        }
+
+
+        return subgraph;
     }
 }

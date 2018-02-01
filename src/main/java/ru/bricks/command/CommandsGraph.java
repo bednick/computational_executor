@@ -1,7 +1,8 @@
 package ru.bricks.command;
 
-import ru.bricks.ConnectionsGraph;
+import ru.bricks.graph.ConnectionsGraph;
 import ru.executors.ExecutorGraph;
+import ru.libra.ILibra;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +31,16 @@ public class CommandsGraph implements ICommand<ExecutorGraph> {
     @Override
     public String getMark(String name) {
         return marks.get(name);
+    }
+
+    @Override
+    public void setWeight(ILibra libra) {
+
+    }
+
+    @Override
+    public float getWeight() {
+        return 100;
     }
 
     public ConnectionsGraph getGraph() {

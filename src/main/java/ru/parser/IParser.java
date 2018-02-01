@@ -1,6 +1,6 @@
 package ru.parser;
 
-import ru.bricks.ConnectionsGraph;
+import ru.bricks.graph.ConnectionsGraph;
 
 import java.io.IOException;
 import java.io.InputStream;
