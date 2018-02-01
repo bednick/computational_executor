@@ -1,5 +1,6 @@
 package ru.bricks.command;
 
+import ru.bricks.Pair;
 import ru.executors.ExecutorCommand;
 import ru.libra.ILibra;
 
@@ -31,7 +32,7 @@ public class Command implements ICommand<ExecutorCommand> {
     }
 
     @Override
-    public void exec(BlockingQueue queue) {
+    public void exec(BlockingQueue<Pair<Command, Integer>> queue) {
         executor.exec(command, queue);
     }
 

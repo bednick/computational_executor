@@ -1,5 +1,6 @@
 package ru.bricks.command;
 
+import ru.bricks.Pair;
 import ru.bricks.graph.ConnectionsGraph;
 import ru.decision.DecisionFactory;
 import ru.decision.IDecisionMaker;
@@ -26,7 +27,7 @@ public class CommandsGraph implements ICommand<ExecutorGraph> {
     }
 
     @Override
-    public void exec(BlockingQueue queue) {
+    public void exec(BlockingQueue<Pair<Command, Integer>> queue) {
         executor.exec(graph, queue);
     }
 
