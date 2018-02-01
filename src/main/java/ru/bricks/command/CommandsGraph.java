@@ -2,6 +2,7 @@ package ru.bricks.command;
 
 import ru.bricks.graph.ConnectionsGraph;
 import ru.executors.ExecutorGraph;
+import ru.executors.IObserver;
 import ru.libra.ILibra;
 
 import java.util.HashMap;
@@ -12,15 +13,19 @@ public class CommandsGraph implements ICommand<ExecutorGraph> {
     private ExecutorGraph executor;
     private Map<String, String> marks;
 
-    public CommandsGraph(ConnectionsGraph graph, ExecutorGraph executor) {
+    public CommandsGraph(ConnectionsGraph graph) {
         this.graph = graph;
-        this.executor = executor;
         this.marks = new HashMap<>();
     }
 
     @Override
-    public ExecutorGraph getExecutor() {
-        return executor;
+    public void setExecutor(ExecutorGraph executor) {
+        this.executor = executor;
+    }
+
+    @Override
+    public IObserver exec() {
+        return executor.exec(graph);
     }
 
     @Override

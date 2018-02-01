@@ -4,9 +4,9 @@ import ru.bricks.command.ICommand;
 
 import java.io.IOException;
 
-public interface IExecutor<T extends ICommand> {
+public interface IExecutor<T> { //  extends ICommand
 
-    IObserver exec(T command) throws IOException;
+    IObserver exec(T command);
 
     // Доступен ли исполнитель на данный момент
     boolean isAvailable();

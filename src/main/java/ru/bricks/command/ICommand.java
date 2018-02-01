@@ -1,10 +1,13 @@
 package ru.bricks.command;
 
 import ru.executors.IExecutor;
+import ru.executors.IObserver;
 import ru.libra.ILibra;
 
 public interface ICommand<T extends IExecutor> {
-    T getExecutor();
+    void setExecutor(T executor);
+
+    IObserver exec();
 
     void addMark(String name, String value);
 

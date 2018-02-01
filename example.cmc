@@ -1,4 +1,0 @@
-#version 1.0
-
-
-;__test__.txt; echo "it is test" >> __test__.txt #

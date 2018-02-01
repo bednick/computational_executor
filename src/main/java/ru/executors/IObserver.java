@@ -1,5 +1,5 @@
 package ru.executors;
 
-interface IObserver {
+public interface IObserver {
 
 }

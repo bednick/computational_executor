@@ -1,19 +1,20 @@
 package ru.executors;
 
 import ru.bricks.command.CommandsGraph;
+import ru.bricks.graph.ConnectionsGraph;
 import ru.decision.DecisionFactory;
 import ru.decision.IDecisionMaker;
 
 import java.io.IOException;
 
-public class ExecutorGraph implements IExecutor<CommandsGraph> {
+public class ExecutorGraph implements IExecutor<ConnectionsGraph> { // CommandsGraph
     public ExecutorGraph() {}
 
     @Override
-    public IObserver exec(CommandsGraph commands) throws IOException {
+    public IObserver exec(ConnectionsGraph commands) {
         // запускает в отдельном потоке выполнение подзадачи (так же и основной)
         // TODO
-        IDecisionMaker decision = DecisionFactory.getDecisionMaker(commands.getGraph());
+        IDecisionMaker decision = DecisionFactory.getDecisionMaker(commands);
         // Создаётся поток в котором работает очередь задач
         return new ObserverThread();
     }

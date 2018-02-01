@@ -21,9 +21,10 @@ public class Test_2 {
         ConnectionsGraph graph = parser.process(new FileInputStream(file_cmc),
 //                Collections.singletonList("hatch_a_b_c"));
                 Collections.singletonList("hatch_d_e_f"));
-        ExecutorGraph executorGraph = new ExecutorGraph();
-        CommandsGraph commandsGraph = new CommandsGraph(graph, executorGraph);
 
-        commandsGraph.getExecutor().exec(commandsGraph);
+        CommandsGraph commandsGraph = new CommandsGraph(graph);
+        commandsGraph.setExecutor(new ExecutorGraph());
+
+        commandsGraph.exec();
     }
 }

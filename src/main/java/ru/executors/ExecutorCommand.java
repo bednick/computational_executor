@@ -8,25 +8,30 @@ import java.io.*;
 /**
  *
  */
-public abstract class ExecutorCommand implements IExecutor<Command> {
+public abstract class ExecutorCommand implements IExecutor<String> {
     private static boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("win");
 
     ExecutorCommand() {}
 
     @Override
-    public IObserver exec(Command command) throws IOException {
-        String com = command.getCommand();
-        Process process;
-        if (isWindows) {
-            process = win(com);
-        } else {
-            process = sh(com);
+    public IObserver exec(String command) {
+        try {
+
+            Process process;
+            if (isWindows) {
+                process = win(command);
+            } else {
+                process = sh(command);
+            }
+            String name = command.split(" ")[0];
+            setUpStreamGobbler(process.getInputStream(), System.out, name);
+            setUpStreamGobbler(process.getErrorStream(), System.err, name);
+            return new ObserverProcess(process);
+        } catch (IOException e) {
+            return null;
         }
-        String name = com.split(" ")[0];
-        setUpStreamGobbler(process.getInputStream(), System.out, name);
-        setUpStreamGobbler(process.getErrorStream(), System.err, name);
         //return process;
-        return new ObserverProcess(process);
+
     }
 
     private void setUpStreamGobbler(final InputStream is, final PrintStream ps, String name) {
