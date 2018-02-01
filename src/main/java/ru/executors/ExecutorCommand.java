@@ -1,37 +1,51 @@
 package ru.executors;
 
-
+import ru.bricks.Pair;
 import ru.bricks.command.Command;
 
 import java.io.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
 
 /**
  *
  */
-public abstract class ExecutorCommand implements IExecutor<String> {
+public abstract class ExecutorCommand implements IExecutor<String>  {
     private static boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("win");
 
     ExecutorCommand() {}
 
     @Override
-    public IObserver exec(String command) {
-        try {
-
-            Process process;
-            if (isWindows) {
-                process = win(command);
-            } else {
-                process = sh(command);
+    public void exec(String command, BlockingQueue<Pair<Command, Integer>> queue) {
+        Callable<Void> callable = () -> {
+            Process process = null;
+            try {
+                if (isWindows) {
+                    process = win(command);
+                } else {
+                    process = sh(command);
+                }
+                String name = command.split(" ")[0];
+                setUpStreamGobbler(process.getInputStream(), System.out, name);
+                setUpStreamGobbler(process.getErrorStream(), System.err, name);
+                // создать поток, который будет ждать и после завершения поместит в очередь
+                // TODO
+                //return new ObserverProcess(process);
+            } catch (IOException e) {
+                //
             }
-            String name = command.split(" ")[0];
-            setUpStreamGobbler(process.getInputStream(), System.out, name);
-            setUpStreamGobbler(process.getErrorStream(), System.err, name);
-            return new ObserverProcess(process);
-        } catch (IOException e) {
+            if (process == null) {
+                queue.add(new Pair<Command, Integer>(new Command(command), -1));
+            } else {
+                queue.add(new Pair<Command, Integer>(new Command(command), process.waitFor()));
+            }
             return null;
-        }
-        //return process;
-
+        };
+        // TODO использовать пул потоков! (общий для всех потоков)
+        FutureTask<Void> task = new FutureTask<Void>(callable);
+        Thread t = new Thread(task);
+        t.start();
     }
 
     private void setUpStreamGobbler(final InputStream is, final PrintStream ps, String name) {

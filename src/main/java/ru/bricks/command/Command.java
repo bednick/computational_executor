@@ -1,11 +1,11 @@
 package ru.bricks.command;
 
 import ru.executors.ExecutorCommand;
-import ru.executors.IObserver;
 import ru.libra.ILibra;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 
 /**
  *
@@ -31,9 +31,8 @@ public class Command implements ICommand<ExecutorCommand> {
     }
 
     @Override
-    public IObserver exec() {
-        // TODO возможно нужно запомнить IObserver
-        return executor.exec(command);
+    public void exec(BlockingQueue queue) {
+        executor.exec(command, queue);
     }
 
     public void addMark(String name, String value) {
@@ -76,11 +75,6 @@ public class Command implements ICommand<ExecutorCommand> {
     public int hashCode() {
         return command.hashCode();
     }
-
-//    @Override
-//    public ExecutorCommand getExecutor() {
-//        return executor;
-//    }
 
     @Override
     public String toString() {

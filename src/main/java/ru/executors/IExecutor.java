@@ -1,12 +1,13 @@
 package ru.executors;
 
-import ru.bricks.command.ICommand;
+import ru.bricks.Pair;
+import ru.bricks.command.Command;
 
-import java.io.IOException;
+import java.util.concurrent.BlockingQueue;
 
 public interface IExecutor<T> { //  extends ICommand
 
-    IObserver exec(T command);
+    void exec(T command, BlockingQueue<Pair<Command, Integer>> queue);
 
     // Доступен ли исполнитель на данный момент
     boolean isAvailable();

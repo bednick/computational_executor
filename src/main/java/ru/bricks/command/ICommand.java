@@ -1,13 +1,14 @@
 package ru.bricks.command;
 
 import ru.executors.IExecutor;
-import ru.executors.IObserver;
 import ru.libra.ILibra;
+
+import java.util.concurrent.BlockingQueue;
 
 public interface ICommand<T extends IExecutor> {
     void setExecutor(T executor);
 
-    IObserver exec();
+    void exec(BlockingQueue queue);
 
     void addMark(String name, String value);
 

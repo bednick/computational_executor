@@ -2,11 +2,11 @@ package ru.bricks.command;
 
 import ru.bricks.graph.ConnectionsGraph;
 import ru.executors.ExecutorGraph;
-import ru.executors.IObserver;
 import ru.libra.ILibra;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 
 public class CommandsGraph implements ICommand<ExecutorGraph> {
     private ConnectionsGraph graph;
@@ -24,8 +24,8 @@ public class CommandsGraph implements ICommand<ExecutorGraph> {
     }
 
     @Override
-    public IObserver exec() {
-        return executor.exec(graph);
+    public void exec(BlockingQueue queue) {
+        executor.exec(graph, queue);
     }
 
     @Override
