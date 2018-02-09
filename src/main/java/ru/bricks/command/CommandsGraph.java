@@ -6,12 +6,11 @@ import ru.bricks.state.State;
 import ru.decision.DecisionFactory;
 import ru.decision.IDecisionMaker;
 import ru.executors.ExecutorGraph;
-import ru.libra.ILibra;
+import ru.libra.ILibraCommand;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
 public class CommandsGraph implements ICommand<ExecutorGraph> {
@@ -20,12 +19,14 @@ public class CommandsGraph implements ICommand<ExecutorGraph> {
     private Map<String, String> marks;
     private List<State> out;
     private float weight;
+    private Performance runtime;
 
     public CommandsGraph(ConnectionsGraph graph, List<State> out) {
         this.graph = graph;
         this.marks = new HashMap<>();
         this.out = out;
-        weight = graph.getCommands().size() * 10;
+        this.weight = graph.getCommands().size() * 10;
+        this.runtime = Performance.NOT_SPECIFIED;
     }
 
     @Override
@@ -34,8 +35,8 @@ public class CommandsGraph implements ICommand<ExecutorGraph> {
     }
 
     @Override
-    public void exec(BlockingQueue<Pair<Command, Integer>> queue) {
-        executor.exec(graph, queue);
+    public void exec(BlockingQueue<Pair<ICommand, Integer>> queue) {
+        executor.exec(graph,  queue);
     }
 
     @Override
@@ -49,7 +50,7 @@ public class CommandsGraph implements ICommand<ExecutorGraph> {
     }
 
     @Override
-    public void setWeight(ILibra libra) {
+    public void setWeight(ILibraCommand libra) {
         for (ICommand command: graph.getCommands()) {
             command.setWeight(libra);
         }
@@ -62,6 +63,17 @@ public class CommandsGraph implements ICommand<ExecutorGraph> {
     public float getWeight() {
         return weight;
     }
+
+    @Override
+    public Performance getRuntime() {
+        return runtime;
+    }
+
+    @Override
+    public void setRuntime(Performance runtime) {
+        this.runtime = runtime;
+    }
+
 
     public ConnectionsGraph getGraph() {
         return graph;

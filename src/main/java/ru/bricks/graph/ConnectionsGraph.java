@@ -4,6 +4,7 @@ import ru.bricks.command.ICommand;
 import ru.bricks.state.State;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -161,6 +162,14 @@ public class ConnectionsGraph {
 
 
         return subgraph;
+    }
+
+    public Set<Vertex<ICommand>> getVertexCommands() {
+        return new HashSet<>(commands.values());
+    }
+
+    public Set<Vertex<State>> getVertexStates() {
+        return new HashSet<>(states.values());
     }
 
     public Set<ICommand> getCommands() {

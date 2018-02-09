@@ -2,6 +2,7 @@ package ru.executors;
 
 import ru.bricks.Pair;
 import ru.bricks.command.Command;
+import ru.bricks.command.ICommand;
 
 import java.io.*;
 import java.util.concurrent.BlockingQueue;
@@ -17,7 +18,7 @@ public abstract class ExecutorCommand implements IExecutor<String>  {
     ExecutorCommand() {}
 
     @Override
-    public void exec(String command, BlockingQueue<Pair<Command, Integer>> queue) {
+    public void exec(String command, BlockingQueue<Pair<ICommand, Integer>> queue) {
         Callable<Void> callable = () -> {
             Process process = null;
             try {
@@ -36,9 +37,9 @@ public abstract class ExecutorCommand implements IExecutor<String>  {
                 //
             }
             if (process == null) {
-                queue.add(new Pair<Command, Integer>(new Command(command), -1));
+                queue.add(new Pair<ICommand, Integer>(new Command(command), -1));
             } else {
-                queue.add(new Pair<Command, Integer>(new Command(command), process.waitFor()));
+                queue.add(new Pair<ICommand, Integer>(new Command(command), process.waitFor()));
             }
             return null;
         };

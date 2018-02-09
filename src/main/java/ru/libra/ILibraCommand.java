@@ -5,6 +5,6 @@ import ru.bricks.command.Command;
 /**
  *
  */
-public interface ILibra {
+public interface ILibraCommand {
     float getWeight(Command command);
 }

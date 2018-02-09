@@ -5,7 +5,7 @@ import ru.bricks.command.Command;
 /**
  *
  */
-public class WeightTime implements ILibra{
+public class WeightTime implements ILibraCommand {
     @Override
     public float getWeight(Command command) {
         String timeStr = command.getMark("time");

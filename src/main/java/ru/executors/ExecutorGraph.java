@@ -2,6 +2,7 @@ package ru.executors;
 
 import ru.bricks.Pair;
 import ru.bricks.command.Command;
+import ru.bricks.command.ICommand;
 import ru.bricks.graph.ConnectionsGraph;
 import ru.decision.DecisionFactory;
 import ru.decision.IDecisionMaker;
@@ -16,7 +17,7 @@ public class ExecutorGraph implements IExecutor<ConnectionsGraph> { // CommandsG
     public ExecutorGraph() {}
 
     @Override
-    public void exec(ConnectionsGraph commands, BlockingQueue<Pair<Command, Integer>> queue) {
+    public void exec(ConnectionsGraph commands, BlockingQueue<Pair<ICommand, Integer>> queue) {
         // использовать  BlockingQueue queue для запуска 1ой! таски, которая отвечает за поток
         // запускает в отдельном потоке выполнение подзадачи (так же и основной)
         // todo
@@ -51,7 +52,7 @@ public class ExecutorGraph implements IExecutor<ConnectionsGraph> { // CommandsG
     }
 
     @Override
-    public float overheads() {
+    public float overheads(ICommand command) {
         return 1;
     }
 }

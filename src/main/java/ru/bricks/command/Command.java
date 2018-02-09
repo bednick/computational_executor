@@ -2,7 +2,7 @@ package ru.bricks.command;
 
 import ru.bricks.Pair;
 import ru.executors.ExecutorCommand;
-import ru.libra.ILibra;
+import ru.libra.ILibraCommand;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,9 +17,11 @@ public class Command implements ICommand<ExecutorCommand> {
     private String command;
     private Map<String, String> marks = null;
     private float weight = 0;
+    private Performance runtime;
 
     public Command(final String command) {
         this.command = command;
+        this.runtime = Performance.NOT_SPECIFIED;
     }
 
     public String getCommand() {
@@ -32,7 +34,7 @@ public class Command implements ICommand<ExecutorCommand> {
     }
 
     @Override
-    public void exec(BlockingQueue<Pair<Command, Integer>> queue) {
+    public void exec(BlockingQueue<Pair<ICommand, Integer>> queue) {
         executor.exec(command, queue);
     }
 
@@ -51,7 +53,7 @@ public class Command implements ICommand<ExecutorCommand> {
     }
 
     @Override
-    public void setWeight(ILibra libra) {
+    public void setWeight(ILibraCommand libra) {
         weight = libra.getWeight(this);
     }
 
@@ -82,4 +84,13 @@ public class Command implements ICommand<ExecutorCommand> {
         return String.format("Command: %s ", command);
     }
 
+    @Override
+    public Performance getRuntime() {
+        return runtime;
+    }
+
+    @Override
+    public void setRuntime(Performance runtime) {
+        this.runtime = runtime;
+    }
 }
