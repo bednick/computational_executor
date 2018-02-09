@@ -12,34 +12,31 @@ import java.util.concurrent.FutureTask;
 /**
  *
  */
-public abstract class ExecutorCommand implements IExecutor<String>  {
+public abstract class ExecutorCommand implements IExecutor<Command>  {
     private static boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("win");
 
     ExecutorCommand() {}
 
     @Override
-    public void exec(String command, BlockingQueue<Pair<ICommand, Integer>> queue) {
+    public void exec(Command command, BlockingQueue<Pair<ICommand, Integer>> queue) {
         Callable<Void> callable = () -> {
             Process process = null;
             try {
                 if (isWindows) {
-                    process = win(command);
+                    process = win(command.getCommand());
                 } else {
-                    process = sh(command);
+                    process = sh(command.getCommand());
                 }
-                String name = command.split(" ")[0];
+                String name = command.getCommand().split(" ")[0];
                 setUpStreamGobbler(process.getInputStream(), System.out, name);
                 setUpStreamGobbler(process.getErrorStream(), System.err, name);
-                // создать поток, который будет ждать и после завершения поместит в очередь
-                // TODO
-                //return new ObserverProcess(process);
             } catch (IOException e) {
-                //
+                process = null;
             }
             if (process == null) {
-                queue.add(new Pair<ICommand, Integer>(new Command(command), -1));
+                queue.add(new Pair<ICommand, Integer>(new Command(command.getCommand()), -1));
             } else {
-                queue.add(new Pair<ICommand, Integer>(new Command(command), process.waitFor()));
+                queue.add(new Pair<ICommand, Integer>(new Command(command.getCommand()), process.waitFor()));
             }
             return null;
         };

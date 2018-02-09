@@ -1,6 +1,6 @@
 package ru.executors;
 
-import ru.bricks.command.ICommand;
+import ru.bricks.command.Command;
 
 import java.io.IOException;
 
@@ -31,7 +31,7 @@ public class ExecutorCommandLocal extends ExecutorCommand {
     }
 
     @Override
-    public float overheads(ICommand command) {
+    public float overheads(Command command) {
         return 1;
     }
 }

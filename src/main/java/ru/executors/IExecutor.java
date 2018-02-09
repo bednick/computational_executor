@@ -6,7 +6,7 @@ import ru.bricks.command.ICommand;
 
 import java.util.concurrent.BlockingQueue;
 
-public interface IExecutor<T> { //  extends ICommand
+public interface IExecutor<T extends ICommand> { //  extends ICommand
 
     void exec(T command, BlockingQueue<Pair<ICommand, Integer>> queue);
 
@@ -17,5 +17,5 @@ public interface IExecutor<T> { //  extends ICommand
     float confidence();
 
     // Слагаемое дополнительной нагрузки (накладные расходы на выполнение)
-    float overheads(ICommand command);
+    float overheads(T command);
 }

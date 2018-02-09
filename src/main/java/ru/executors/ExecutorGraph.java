@@ -2,6 +2,7 @@ package ru.executors;
 
 import ru.bricks.Pair;
 import ru.bricks.command.Command;
+import ru.bricks.command.CommandsGraph;
 import ru.bricks.command.ICommand;
 import ru.bricks.graph.ConnectionsGraph;
 import ru.decision.DecisionFactory;
@@ -13,11 +14,11 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
 
-public class ExecutorGraph implements IExecutor<ConnectionsGraph> { // CommandsGraph
+public class ExecutorGraph implements IExecutor<CommandsGraph> { // CommandsGraph
     public ExecutorGraph() {}
 
     @Override
-    public void exec(ConnectionsGraph commands, BlockingQueue<Pair<ICommand, Integer>> queue) {
+    public void exec(CommandsGraph commands, BlockingQueue<Pair<ICommand, Integer>> queue) {
         // использовать  BlockingQueue queue для запуска 1ой! таски, которая отвечает за поток
         // запускает в отдельном потоке выполнение подзадачи (так же и основной)
         // todo
@@ -33,26 +34,30 @@ public class ExecutorGraph implements IExecutor<ConnectionsGraph> { // CommandsG
 
         Callable<Void> callable = () -> {
             return null;
+            // TODO не забыть поместить в верхнюю очередь метку о завершении
         };
         // TODO использовать пул потоков! (общий для всех потоков)
         FutureTask<Void> task = new FutureTask<Void>(callable);
         Thread t = new Thread(task);
         t.start();
+
     }
 
     @Override
     public boolean isAvailable() {
-
+        // TODO продумать приемлимую стратегию
         return true;
     }
 
     @Override
     public float confidence() {
+        //TODO пробежать по графу, и посчитать произведение confidence
         return 1;
     }
 
     @Override
-    public float overheads(ICommand command) {
+    public float overheads(CommandsGraph command) {
+        // TODO пробежать по графу, и посчитать сумму overheads
         return 1;
     }
 }
