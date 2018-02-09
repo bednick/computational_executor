@@ -33,7 +33,7 @@ public class Parser_v1 extends Replace implements IParser {
     }
 
     @Override
-    public ConnectionsGraph process(InputStream stream, List<String> outStates) throws IOException {
+    public ConnectionsGraph process(InputStream stream, List<State> outStates) throws IOException {
         BufferedReader resource = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
         ConnectionsGraph graph = new ConnectionsGraph();
 
@@ -48,8 +48,8 @@ public class Parser_v1 extends Replace implements IParser {
                 addData(line, graph);
             }
         }
-        // TODO добавить фиктивную комманду, которая обединяет все входные состояния
-        graph = graph.subgraphFromLeaf(new State(outStates.get(0)));
+
+        graph = graph.subgraphFromLeaf(outStates);
 
         return graph;
     }
@@ -82,12 +82,7 @@ public class Parser_v1 extends Replace implements IParser {
         line = patternReplace(line, "include", 0);
         String[] sp = line.split("#", 2);
         String com = sp[0].split(";", 3)[2].trim();
-//        Arrays.stream(in).forEach(System.out::println);
-//        Arrays.stream(out).forEach(System.out::println);
-//        System.out.println(command);
-//        Arrays.stream(marks).forEach(System.out::println);
-//        System.out.println();
-        ICommand command = new Command(com, executor_line);
+        ICommand command = new Command(com);
 
         Arrays.stream(sp[1].split(" "))
                 .map(String::trim)
@@ -120,13 +115,6 @@ public class Parser_v1 extends Replace implements IParser {
 
     @Override
     protected String replace(List<String> args) {
-//        // Map<String, Map<String, List<Map<String, String>>>>
-//        if (!include_args.containsKey(args.get(1))) {
-//            include_args.put(args.get(1), new HashMap<>());
-//        }
-//        if (!include_args.get(args.get(1)).containsKey(args.get(2))) {
-//            include_args.get(args.get(1)).put(args.get(2), new ArrayList<>());
-//        }
         String new_name = String.format("%s::%d::%s", args.get(1), gen++, args.get(2));
         Map<String, String> my_args = new HashMap<>();
         args.stream().skip(3).forEach(l->{
@@ -134,7 +122,6 @@ public class Parser_v1 extends Replace implements IParser {
             my_args.put(name_value[0], name_value[1]);
         });
         include.put(new_name, new Pair<>(include_file.get(args.get(1)), my_args));
-//        include_args.get(args.get(1)).get(args.get(2)).add(my_args);
 
         return new_name;
     }

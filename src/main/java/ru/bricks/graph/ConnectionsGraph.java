@@ -131,11 +131,13 @@ public class ConnectionsGraph {
         return leafCommands;
     }
 
-    public ConnectionsGraph subgraphFromLeaf(State stateLeaf) {
-        Vertex<State> leaf = getVertexState(stateLeaf);
+    public ConnectionsGraph subgraphFromLeaf(Collection<State> statesLeaf) {
         Set<Vertex<ICommand>> allCommands = new HashSet<>();
         Queue<Vertex<State>> queue = new LinkedList<>();
-        queue.add(leaf);
+        for (State stateLeaf: statesLeaf) {
+            Vertex<State> leaf = getVertexState(stateLeaf);
+            queue.add(leaf);
+        }
 
         ConnectionsGraph subgraph = new ConnectionsGraph();
         while (!queue.isEmpty()) {
@@ -159,5 +161,13 @@ public class ConnectionsGraph {
 
 
         return subgraph;
+    }
+
+    public Set<ICommand> getCommands() {
+        return commands.keySet();
+    }
+
+    public Set<State> getStates() {
+        return states.keySet();
     }
 }

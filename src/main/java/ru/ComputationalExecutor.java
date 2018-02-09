@@ -3,6 +3,7 @@ package ru;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import ru.bricks.graph.ConnectionsGraph;
+import ru.bricks.state.State;
 import ru.commandline.CommandBuild;
 import ru.commandline.CommandRun;
 import ru.parser.Selecting;
@@ -11,6 +12,7 @@ import ru.preprocessor.Preprocessor_v1;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ComputationalExecutor {
@@ -68,7 +70,12 @@ public class ComputationalExecutor {
 
     private static void run(CommandRun commandRun) throws IOException {
         File correct = build(new CommandBuild(commandRun.getDelegate()));
-        List<String> outStates = commandRun.getOutStates();
+        List<String> out = commandRun.getOutStates();
+        List<State> outStates = new ArrayList<>();
+        for (String str: out) {
+            outStates.add(new State(str));
+        }
+
         Selecting selecting = new Selecting();
 
         ConnectionsGraph connectionsGraph = selecting.select(new FileInputStream(correct))
