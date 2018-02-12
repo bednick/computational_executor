@@ -3,7 +3,7 @@ package ru.decision;
 import ru.bricks.command.Command;
 import ru.bricks.command.Performance;
 import ru.bricks.connectionsgraph.ConnectionsGraph;
-import ru.bricks.connectionsgraph.Vertex;
+import ru.bricks.connectionsgraph.VertexCG;
 import ru.bricks.state.Attainability;
 import ru.bricks.state.State;
 
@@ -25,14 +25,14 @@ public abstract class DecisionMaker implements IDecisionMaker {
                 .filter(command -> command.getRuntime().equals(Performance.NOT_SPECIFIED))
                 .forEach(command -> command.setRuntime(Performance.CAN_PERFORMED));
 
-        Queue<Vertex<State>> canNotAchieved = connectionsGraph.getVertexStates().stream()
+        Queue<VertexCG<State>> canNotAchieved = connectionsGraph.getVertexStates().stream()
                 .filter(vs -> vs.getObject().getAttainability().equals(Attainability.CAN_NOT_ACHIEVED))
                 .collect(Collectors.toCollection(LinkedList::new));
 
         connectionsGraph.getVertexCommands().stream()
                 .filter(command -> command.getObject().getRuntime().equals(Performance.PERFORMED_INCORRECT))
                 .forEach(command -> {
-                    for (Vertex<State> outState: command.getOut()) {
+                    for (VertexCG<State> outState: command.getOut()) {
                         if (canAchieved(outState)) {
                             continue;
                         }
@@ -43,13 +43,13 @@ public abstract class DecisionMaker implements IDecisionMaker {
                 });
 
         while (!canNotAchieved.isEmpty()) {
-            Vertex<State> stateVertex = canNotAchieved.poll();
-            for (Vertex<Command> commandVertex: stateVertex.getOut()) {
+            VertexCG<State> stateVertex = canNotAchieved.poll();
+            for (VertexCG<Command> commandVertex: stateVertex.getOut()) {
                 if (canPerformed(commandVertex)) {
                     continue;
                 }
                 commandVertex.getObject().setRuntime(Performance.CAN_NOT_PERFORMED);
-                for (Vertex<State> outState: commandVertex.getOut()) {
+                for (VertexCG<State> outState: commandVertex.getOut()) {
                     if (canAchieved(outState)) {
                         continue;
                     }
@@ -61,11 +61,11 @@ public abstract class DecisionMaker implements IDecisionMaker {
 
     }
 
-    private boolean canPerformed(Vertex<Command> commandVertex) {
+    private boolean canPerformed(VertexCG<Command> commandVertex) {
         if (commandVertex.getObject().getRuntime().equals(Performance.CAN_NOT_PERFORMED)) {
             return false;
         }
-        for (Vertex<State> inState: commandVertex.getIn()) {
+        for (VertexCG<State> inState: commandVertex.getIn()) {
             if (inState.getObject().getAttainability().equals(Attainability.CAN_NOT_ACHIEVED)) {
                 return false;
             }
@@ -73,11 +73,11 @@ public abstract class DecisionMaker implements IDecisionMaker {
         return true;
     }
 
-    private boolean canAchieved(Vertex<State> stateVertex) {
+    private boolean canAchieved(VertexCG<State> stateVertex) {
         if (stateVertex.getObject().getAttainability().equals(Attainability.CAN_NOT_ACHIEVED)) {
             return false;
         }
-        for (Vertex<Command> inCommand: stateVertex.getIn()) {
+        for (VertexCG<Command> inCommand: stateVertex.getIn()) {
             if (inCommand.getObject().getRuntime().equals(Performance.CAN_PERFORMED)) {
                 return true;
             }

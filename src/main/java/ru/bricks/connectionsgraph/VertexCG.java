@@ -7,51 +7,42 @@ import java.util.Set;
 /**
  *
  */
-public class Vertex<T> {
-    private Set<Vertex> in;
-    private Set<Vertex> out;
+public class VertexCG<T> {
+    private Set<VertexCG> in;
+    private Set<VertexCG> out;
     private T object;
-    private int weight;
 
-    public Vertex(T object) {
+    public VertexCG(T object) {
         this.object = object;
-        this.in = new HashSet<Vertex>();
-        this.out = new HashSet<Vertex>();
+        this.in = new HashSet<VertexCG>();
+        this.out = new HashSet<VertexCG>();
     }
 
     public T getObject() {
         return object;
     }
 
-    public int getWeight() {
-        return weight;
-    }
-
-    public void setWeight(int weight) {
-        this.weight = weight;
-    }
-
-    public void addIn(Vertex vertex) {
+    public void addIn(VertexCG vertex) {
         in.add(vertex);
     }
 
-    public void addIn(Collection<Vertex> vertices) {
+    public void addIn(Collection<VertexCG> vertices) {
         in.addAll(vertices);
     }
 
-    public void addOut(Vertex vertex) {
+    public void addOut(VertexCG vertex) {
         out.add(vertex);
     }
 
-    public void addOut(Collection<Vertex<T>> vertices) {
+    public void addOut(Collection<VertexCG<T>> vertices) {
         out.addAll(vertices);
     }
 
-    public Set<Vertex> getIn() {
+    public Set<VertexCG> getIn() {
         return in;
     }
 
-    public Set<Vertex> getOut() {
+    public Set<VertexCG> getOut() {
         return out;
     }
 
@@ -63,7 +54,7 @@ public class Vertex<T> {
         if (obj == null || obj.getClass() != this.getClass()) {
             return false;
         }
-        Vertex vertex = (Vertex)obj;
+        VertexCG vertex = (VertexCG)obj;
         return this.object.equals(vertex.object);
     }
 
@@ -75,14 +66,14 @@ public class Vertex<T> {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("Vertex: ").append(object.toString()).append(System.lineSeparator());
+        builder.append("VertexCG: ").append(object.toString()).append(System.lineSeparator());
         builder.append("    in: ");
-        for (Vertex v: in) {
+        for (VertexCG v: in) {
             builder.append(v.object.toString()).append(',').append(' ');
         }
         builder.append(System.lineSeparator());
         builder.append("    out: ");
-        for (Vertex v: out) {
+        for (VertexCG v: out) {
             builder.append(v.object.toString()).append(',').append(' ');
         }
         builder.append(System.lineSeparator());

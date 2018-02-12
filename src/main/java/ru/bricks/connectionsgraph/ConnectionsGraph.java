@@ -9,13 +9,13 @@ import java.util.*;
  *
  */
 public class ConnectionsGraph {
-    private Map<State, Vertex<State>> states;
-    private Set<Vertex<State>> rootStates;
-    private Set<Vertex<State>> leafStates;
+    private Map<State, VertexCG<State>> states;
+    private Set<VertexCG<State>> rootStates;
+    private Set<VertexCG<State>> leafStates;
 
-    private Map<ICommand, Vertex<ICommand>> commands;
-    private Set<Vertex<ICommand>> rootCommands;
-    private Set<Vertex<ICommand>> leafCommands;
+    private Map<ICommand, VertexCG<ICommand>> commands;
+    private Set<VertexCG<ICommand>> rootCommands;
+    private Set<VertexCG<ICommand>> leafCommands;
 
     public ConnectionsGraph() {
         this.states = new HashMap<>();
@@ -31,7 +31,7 @@ public class ConnectionsGraph {
         if (states.containsKey(state)) {
             return;
         }
-        Vertex<State> vertex = new Vertex<>(state);
+        VertexCG<State> vertex = new VertexCG<>(state);
         states.put(state, vertex);
         rootStates.add(vertex);
         leafStates.add(vertex);
@@ -41,7 +41,7 @@ public class ConnectionsGraph {
         if (commands.containsKey(command)) {
             return;
         }
-        Vertex<ICommand> vertex = new Vertex<>(command);
+        VertexCG<ICommand> vertex = new VertexCG<>(command);
         commands.put(command, vertex);
         rootCommands.add(vertex);
         leafCommands.add(vertex);
@@ -54,11 +54,11 @@ public class ConnectionsGraph {
 
     public void addEdges(Set<State> in, ICommand command) {
         addCommand(command);
-        Vertex<ICommand> com = commands.get(command);
+        VertexCG<ICommand> com = commands.get(command);
 
         for (State state: in) {
             addState(state);
-            Vertex<State> v_in = states.get(state);
+            VertexCG<State> v_in = states.get(state);
             v_in.addOut(com);
             com.addIn(v_in);
             rootCommands.remove(com);
@@ -68,11 +68,11 @@ public class ConnectionsGraph {
 
     public void addEdges(ICommand command, Set<State> out) {
         addCommand(command);
-        Vertex<ICommand> com = commands.get(command);
+        VertexCG<ICommand> com = commands.get(command);
 
         for (State state: out) {
             addState(state);
-            Vertex<State> v_out = states.get(state);
+            VertexCG<State> v_out = states.get(state);
             com.addOut(v_out);
             v_out.addIn(com);
             leafCommands.remove(com);
@@ -82,23 +82,23 @@ public class ConnectionsGraph {
     }
 
     public void addEdge(ICommand command, State state) {
-        Vertex<ICommand> vertex_command;
+        VertexCG<ICommand> vertex_command;
         if (commands.containsKey(command)) {
             vertex_command = commands.get(command);
             leafCommands.remove(vertex_command);
 
         } else {
-            vertex_command = new Vertex<>(command);
+            vertex_command = new VertexCG<>(command);
             commands.put(command, vertex_command);
             rootCommands.add(vertex_command);
         }
 
-        Vertex<State> vertex_state;
+        VertexCG<State> vertex_state;
         if (states.containsKey(state)) {
             vertex_state = states.get(state);
             rootStates.remove(vertex_state);
         } else {
-            vertex_state = new Vertex<>(state);
+            vertex_state = new VertexCG<>(state);
             states.put(state, vertex_state);
             leafStates.add(vertex_state);
         }
@@ -107,43 +107,43 @@ public class ConnectionsGraph {
         vertex_state.addIn(vertex_command);
     }
 
-    public Vertex<State> getVertexState(State state) {
+    public VertexCG<State> getVertexState(State state) {
         return states.get(state);
     }
 
-    public Vertex<ICommand> getVertexCommand(ICommand command) {
+    public VertexCG<ICommand> getVertexCommand(ICommand command) {
         return commands.get(command);
     }
 
-    public Set<Vertex<State>> getRootStates() {
+    public Set<VertexCG<State>> getRootStates() {
         return rootStates;
     }
 
-    public Set<Vertex<State>> getLeafStates() {
+    public Set<VertexCG<State>> getLeafStates() {
         return leafStates;
     }
 
-    public Set<Vertex<ICommand>> getRootCommands() {
+    public Set<VertexCG<ICommand>> getRootCommands() {
         return rootCommands;
     }
 
-    public Set<Vertex<ICommand>> getLeafCommands() {
+    public Set<VertexCG<ICommand>> getLeafCommands() {
         return leafCommands;
     }
 
     public ConnectionsGraph subgraphFromLeaf(Collection<State> statesLeaf) {
-        Set<Vertex<ICommand>> allCommands = new HashSet<>();
-        Queue<Vertex<State>> queue = new LinkedList<>();
+        Set<VertexCG<ICommand>> allCommands = new HashSet<>();
+        Queue<VertexCG<State>> queue = new LinkedList<>();
         for (State stateLeaf: statesLeaf) {
-            Vertex<State> leaf = getVertexState(stateLeaf);
+            VertexCG<State> leaf = getVertexState(stateLeaf);
             queue.add(leaf);
         }
 
         ConnectionsGraph subgraph = new ConnectionsGraph();
         while (!queue.isEmpty()) {
-            Vertex<State> state = queue.poll();
+            VertexCG<State> state = queue.poll();
             subgraph.addState(state.getObject());
-            for (Vertex inCom: state.getIn()) {
+            for (VertexCG inCom: state.getIn()) {
                 if (allCommands.contains(inCom)) {
                     continue;
                 }
@@ -151,7 +151,7 @@ public class ConnectionsGraph {
                 subgraph.addEdge((ICommand) inCom.getObject(), state.getObject());
                 Set<State> in = new HashSet<>();
                 for (Object inState: inCom.getIn()) {
-                    Vertex<State> _in = (Vertex<State>) inState;
+                    VertexCG<State> _in = (VertexCG<State>) inState;
                     in.add(_in.getObject());
                     queue.add(_in);
                 }
@@ -163,11 +163,11 @@ public class ConnectionsGraph {
         return subgraph;
     }
 
-    public Set<Vertex<ICommand>> getVertexCommands() {
+    public Set<VertexCG<ICommand>> getVertexCommands() {
         return new HashSet<>(commands.values());
     }
 
-    public Set<Vertex<State>> getVertexStates() {
+    public Set<VertexCG<State>> getVertexStates() {
         return new HashSet<>(states.values());
     }
 
