@@ -1,7 +1,7 @@
 package ru.bricks.command;
 
 import ru.bricks.Pair;
-import ru.bricks.graph.ConnectionsGraph;
+import ru.bricks.connectionsgraph.ConnectionsGraph;
 import ru.bricks.state.State;
 import ru.decision.DecisionFactory;
 import ru.decision.IDecisionMaker;
@@ -36,7 +36,7 @@ public class CommandsGraph implements ICommand<ExecutorGraph> {
 
     @Override
     public void exec(BlockingQueue<Pair<ICommand, Integer>> queue) {
-        executor.exec(graph,  queue);
+        executor.exec(this,  queue);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class CommandsGraph implements ICommand<ExecutorGraph> {
         for (ICommand command: graph.getCommands()) {
             command.setWeight(libra);
         }
-        // TODO установить веса для вершин графа и для самого графа (для этого необходимо строить алгоритмом сценарий)
+        //установить веса для вершин графа и для самого графа (для этого необходимо строить алгоритмом сценарий)
         IDecisionMaker decision = DecisionFactory.getDecisionMaker(graph);
         weight = decision.decide(graph, out);
     }

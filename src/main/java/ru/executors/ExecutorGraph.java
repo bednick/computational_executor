@@ -1,14 +1,9 @@
 package ru.executors;
 
 import ru.bricks.Pair;
-import ru.bricks.command.Command;
 import ru.bricks.command.CommandsGraph;
 import ru.bricks.command.ICommand;
-import ru.bricks.graph.ConnectionsGraph;
-import ru.decision.DecisionFactory;
-import ru.decision.IDecisionMaker;
 
-import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;

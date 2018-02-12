@@ -1,4 +1,4 @@
-package ru.bricks.graph;
+package ru.bricks.connectionsgraph;
 
 import java.util.Collection;
 import java.util.HashSet;

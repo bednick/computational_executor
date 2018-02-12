@@ -2,7 +2,7 @@ package ru;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
-import ru.bricks.graph.ConnectionsGraph;
+import ru.bricks.connectionsgraph.ConnectionsGraph;
 import ru.bricks.state.State;
 import ru.commandline.CommandBuild;
 import ru.commandline.CommandRun;

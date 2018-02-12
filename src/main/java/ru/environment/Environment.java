@@ -1,6 +1,6 @@
 package ru.environment;
 
-import ru.bricks.graph.ConnectionsGraph;
+import ru.bricks.connectionsgraph.ConnectionsGraph;
 import ru.bricks.state.Attainability;
 import ru.bricks.state.State;
 

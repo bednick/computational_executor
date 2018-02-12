@@ -2,8 +2,8 @@ package ru.decision;
 
 import ru.bricks.command.Command;
 import ru.bricks.command.Performance;
-import ru.bricks.graph.ConnectionsGraph;
-import ru.bricks.graph.Vertex;
+import ru.bricks.connectionsgraph.ConnectionsGraph;
+import ru.bricks.connectionsgraph.Vertex;
 import ru.bricks.state.Attainability;
 import ru.bricks.state.State;
 

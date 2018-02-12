@@ -35,7 +35,7 @@ public class Command implements ICommand<ExecutorCommand> {
 
     @Override
     public void exec(BlockingQueue<Pair<ICommand, Integer>> queue) {
-        executor.exec(command, queue);
+        executor.exec(this, queue);
     }
 
     public void addMark(String name, String value) {

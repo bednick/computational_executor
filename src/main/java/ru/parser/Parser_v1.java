@@ -1,10 +1,9 @@
 package ru.parser;
 
-import ru.bricks.graph.ConnectionsGraph;
+import ru.bricks.connectionsgraph.ConnectionsGraph;
 import ru.bricks.Pair;
 import ru.bricks.Replace;
 import ru.bricks.command.Command;
-import ru.bricks.command.ICommand;
 import ru.bricks.state.State;
 import ru.executors.ExecutorCommand;
 import ru.executors.ExecutorCommandLocal;
@@ -82,7 +81,7 @@ public class Parser_v1 extends Replace implements IParser {
         line = patternReplace(line, "include", 0);
         String[] sp = line.split("#", 2);
         String com = sp[0].split(";", 3)[2].trim();
-        ICommand command = new Command(com);
+        Command command = new Command(com);
 
         Arrays.stream(sp[1].split(" "))
                 .map(String::trim)
@@ -91,6 +90,9 @@ public class Parser_v1 extends Replace implements IParser {
                     String[] name_value = l.split("=", 2);
                     command.addMark(name_value[0], name_value[1]);
                 });
+
+        // TODO command.getMark("exec");
+        command.setExecutor(new ExecutorCommandLocal());
 
         Set<State> states_in = new HashSet<>();
         Arrays.stream(sp[0].split(";", 3)[0].split(","))

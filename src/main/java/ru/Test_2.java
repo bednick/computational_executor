@@ -1,7 +1,7 @@
 package ru;
 
 import ru.bricks.command.CommandsGraph;
-import ru.bricks.graph.ConnectionsGraph;
+import ru.bricks.connectionsgraph.ConnectionsGraph;
 import ru.bricks.state.State;
 import ru.environment.Environment;
 import ru.executors.ExecutorGraph;

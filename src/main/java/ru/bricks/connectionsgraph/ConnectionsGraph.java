@@ -1,10 +1,9 @@
-package ru.bricks.graph;
+package ru.bricks.connectionsgraph;
 
 import ru.bricks.command.ICommand;
 import ru.bricks.state.State;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  *
