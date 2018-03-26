@@ -33,5 +33,8 @@ public class Test_2 {
         commandsGraph.setExecutor(new ExecutorGraph());
 
         //commandsGraph.exec();
+//        System.out.println(Float.NaN + 12);
+//
+
     }
 }

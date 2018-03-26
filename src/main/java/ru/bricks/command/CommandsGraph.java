@@ -57,6 +57,10 @@ public class CommandsGraph implements ICommand<ExecutorGraph> {
         //установить веса для вершин графа и для самого графа (для этого необходимо строить алгоритмом сценарий)
         IDecisionMaker decision = DecisionFactory.getDecisionMaker(graph);
         weight = decision.decide(graph, out);
+        if (Float.isNaN(weight)) {
+            // TODO exception?
+            throw new RuntimeException("Float is NaN");
+        }
     }
 
     @Override

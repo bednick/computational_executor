@@ -7,42 +7,42 @@ import java.util.Set;
 /**
  *
  */
-public class VertexCG<T> {
-    private Set<VertexCG> in;
-    private Set<VertexCG> out;
+public class VertexCG<T, Other> {
+    private Set<VertexCG<Other, T>> in;
+    private Set<VertexCG<Other, T>> out;
     private T object;
 
     public VertexCG(T object) {
         this.object = object;
-        this.in = new HashSet<VertexCG>();
-        this.out = new HashSet<VertexCG>();
+        this.in = new HashSet<VertexCG<Other, T>>();
+        this.out = new HashSet<VertexCG<Other, T>>();
     }
 
     public T getObject() {
         return object;
     }
 
-    public void addIn(VertexCG vertex) {
+    public void addIn(VertexCG<Other, T> vertex) {
         in.add(vertex);
     }
 
-    public void addIn(Collection<VertexCG> vertices) {
+    public void addIn(Collection<VertexCG<Other, T>> vertices) {
         in.addAll(vertices);
     }
 
-    public void addOut(VertexCG vertex) {
+    public void addOut(VertexCG<Other, T> vertex) {
         out.add(vertex);
     }
 
-    public void addOut(Collection<VertexCG<T>> vertices) {
+    public void addOut(Collection<VertexCG<Other, T>> vertices) {
         out.addAll(vertices);
     }
 
-    public Set<VertexCG> getIn() {
+    public Set<VertexCG<Other, T>> getIn() {
         return in;
     }
 
-    public Set<VertexCG> getOut() {
+    public Set<VertexCG<Other, T>> getOut() {
         return out;
     }
 

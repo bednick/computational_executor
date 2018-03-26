@@ -1,0 +1,5 @@
+#version 1.0
+
+a;b;echo "a->b" >> b
+;b;echo "->b" >> b
+b;c;echo "b->c" >> c
