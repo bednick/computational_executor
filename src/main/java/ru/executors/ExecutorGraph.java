@@ -3,6 +3,7 @@ package ru.executors;
 import ru.bricks.Pair;
 import ru.bricks.command.CommandsGraph;
 import ru.bricks.command.ICommand;
+import ru.bricks.command.Performance;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
@@ -28,14 +29,25 @@ public class ExecutorGraph implements IExecutor<CommandsGraph> { // CommandsGrap
         // Создаётся поток в котором работает очередь з
 
         Callable<Void> callable = () -> {
-            return null;
+
+            commands.getGraph().getCommands().stream()
+                    .filter(c->c.getRuntime().equals(Performance.TRAJECTORY))
+                    .forEach(System.out::println);
+
             // TODO не забыть поместить в верхнюю очередь метку о завершении
+            try {
+                queue.put(new Pair<>(commands, 0));
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+            return null;
+
         };
         // TODO использовать пул потоков! (общий для всех потоков)
         FutureTask<Void> task = new FutureTask<Void>(callable);
         Thread t = new Thread(task);
         t.start();
-
+        System.out.println("start threads");
     }
 
     @Override

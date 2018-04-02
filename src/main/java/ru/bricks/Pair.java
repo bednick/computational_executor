@@ -30,6 +30,6 @@ public class Pair<K, V> {
 
     @Override
     public String toString() {
-        return String.format("Pair <%s  %s>", key, value);
+        return String.format("Pair <%s,  %s>", key, value);
     }
 }

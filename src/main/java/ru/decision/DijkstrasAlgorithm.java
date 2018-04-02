@@ -27,7 +27,7 @@ public class DijkstrasAlgorithm extends DecisionMaker {
         updateAchievable(graph);
         for (State outState: outStates) {
             if(graph.getVertexState(outState).getObject().getAttainability().equals(Attainability.CAN_NOT_ACHIEVED)) {
-                return Float.NaN;
+                return Float.POSITIVE_INFINITY;
             }
         }
 
@@ -37,13 +37,16 @@ public class DijkstrasAlgorithm extends DecisionMaker {
                 .collect(Collectors.toList()));
 
         checkCommands = new HashMap<>();
-        addInCheckCommands(graph.getRootCommands());
+        Set<VertexCG<ICommand, State>> roots = graph.getRootCommands();
+        addInCheckCommands(roots);
+
 
         vertexCGQueue = new LinkedList<>();
         addInVertexCGQueue(checkStates.keySet());
 
         while (!vertexCGQueue.isEmpty()) {
             VertexCG<ICommand, State> commandVertexCG = vertexCGQueue.remove();
+
             checkCommands.put(commandVertexCG, getWeightCommand(commandVertexCG));
             addInVertexCGQueue(commandVertexCG.getOut());
         }
@@ -72,6 +75,7 @@ public class DijkstrasAlgorithm extends DecisionMaker {
             float weight = getWeightCommand(commandVertexCG);
             if (!Float.isNaN(weight)) {
                 checkCommands.put(commandVertexCG, weight);
+                addInCheckStates(commandVertexCG.getOut());
             }
         }
     }
@@ -155,6 +159,7 @@ public class DijkstrasAlgorithm extends DecisionMaker {
                 if (!checkCommands.containsKey(com) && isCorrect(com)) {
                     vertexCGQueue.add(com);
                     addInCheckStates(com.getIn());
+                    addInCheckStates(com.getOut());
                 }
             }
         }
@@ -175,34 +180,43 @@ public class DijkstrasAlgorithm extends DecisionMaker {
     }
 
     private float setPaths(ConnectionsGraph graph, List<State> outStates) {
-        Queue<Pair<Float, VertexCG<ICommand, State>>> path = new LinkedList<>();
-        Set<VertexCG<ICommand, State>> allCommand = new HashSet<>();
         float allWeight = 0;
 
         for (State outState: outStates) {
-            System.out.println("outStates " + outStates);
-            path.add(checkStates.get(graph.getVertexState(outState)));
+            VertexCG<ICommand, State> minVertex = null;
+            float minWeight = Float.POSITIVE_INFINITY;
+            VertexCG<State, ICommand> vertexOutState = graph.getVertexState(outState);
+            for (VertexCG<ICommand, State> in: vertexOutState.getIn()) {
+                Float weight = checkCommands.get(in);
+                if (weight == null) {
+                    continue;
+                }
+                if (weight < minWeight) {
+                    minVertex = in;
+                    minWeight = weight;
+                }
+            }
+            setPath(minVertex);
+            allWeight += minWeight;
         }
 
-
-
-        while (!path.isEmpty()) {
-            Pair<Float, VertexCG<ICommand, State>> pair = path.remove();
-            System.out.println("pair " + pair);
-            if (pair.getValue().getObject().getRuntime().equals(Performance.PERFORMED_CORRECT) ||
-                    allCommand.contains(pair.getValue())) {
-                continue;
-            }
-
-            allCommand.add(pair.getValue());
-            allWeight += pair.getKey();
-
-            pair.getValue().getObject().setRuntime(Performance.TRAJECTORY);
-
-            for (VertexCG<State, ICommand> inState: pair.getValue().getIn()) {
-                path.add(checkStates.get(inState));
-            }
-        }
         return allWeight;
     }
+
+    private void setPath(VertexCG<ICommand, State> command) {
+        System.out.println("SET PATH");
+        System.out.println(command);
+        command.getObject().setRuntime(Performance.TRAJECTORY);
+        System.out.println("Runtime");
+        System.out.println(command.getObject().getRuntime());
+
+        for (VertexCG<State, ICommand> in: command.getIn()) {
+            Pair<Float, VertexCG<ICommand, State>> pair = checkStates.get(in);
+            if (pair == null || pair.getValue() == null) {
+                continue;
+            }
+            setPath(pair.getValue());
+        }
+    }
+
 }
