@@ -1,5 +1,0 @@
-#version 1.0
-
-#define TEST __test__
-
-;%{[define][TEST]}.txt; echo "it is test" >> %{[define][TEST]}.txt
