@@ -11,4 +11,4 @@
 2. Install:`mvn clean install` or `mvn clean compile assembly:single`
 
 ## Run an example
-1. `java -jar target/cm_executor-1.0.jar run --cm hello-world.cm -o hello --rm`
+1. `java -jar target/cm_executor-1.0.jar run --cm hello-world.cm -o hello`
