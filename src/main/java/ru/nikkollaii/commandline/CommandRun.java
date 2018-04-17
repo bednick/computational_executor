@@ -36,8 +36,8 @@ public class CommandRun {
             help = true)
     private boolean help = false;
 
-    @Parameter(names = {"--rm"})
-    private boolean rm = false;
+    @Parameter(names = {"--not-rm"})
+    private boolean notRm = false;
 
     @Parameter(names = {"--start-states"},
             //arity = 1,
@@ -75,7 +75,7 @@ public class CommandRun {
         return startStates;
     }
 
-    public boolean isRm() {
-        return rm;
+    public boolean isNotRm() {
+        return notRm;
     }
 }

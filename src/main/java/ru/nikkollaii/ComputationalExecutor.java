@@ -103,7 +103,7 @@ public class ComputationalExecutor {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        if(commandRun.isRm() && correct.delete()) {
+        if(!commandRun.isNotRm() && correct.delete()) {
             System.out.println("delete *.cmc file");
         }
         System.out.println("Correct finish");

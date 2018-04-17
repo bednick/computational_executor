@@ -2,6 +2,7 @@ package ru.nikkollaii.bricks.command;
 
 import ru.nikkollaii.bricks.Pair;
 import ru.nikkollaii.bricks.connectionsgraph.ConnectionsGraph;
+import ru.nikkollaii.bricks.state.Attainability;
 import ru.nikkollaii.bricks.state.State;
 import ru.nikkollaii.decision.DecisionFactory;
 import ru.nikkollaii.decision.IDecisionMaker;
