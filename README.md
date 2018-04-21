@@ -8,7 +8,8 @@
 
 ## Install
 1. Clone this repo with: `git clone https://github.com/nikkollaii/computational_executor.git`
-2. Install:`mvn clean install` or `mvn clean compile assembly:single`
+2. Set "JAVA_HOME=/path/to/java8"
+3. Install:`mvn clean install` or `mvn clean compile assembly:single`
 
 ## Run an example
 1. `java -jar target/cm_executor-1.0.jar run --cm hello-world.cm -o hello`
