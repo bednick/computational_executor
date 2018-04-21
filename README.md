@@ -8,7 +8,7 @@
 
 ## Install
 1. Clone this repo with: `git clone https://github.com/nikkollaii/computational_executor.git`
-2. Set "JAVA_HOME=/path/to/java8"
+2. Set [JAVA_HOME](https://docs.oracle.com/cd/E19182-01/820-7851/inst_cli_jdk_javahome_t/)
 3. Install:`mvn clean install` or `mvn clean compile assembly:single`
 
 ## Run an example
