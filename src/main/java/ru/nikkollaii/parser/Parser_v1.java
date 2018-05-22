@@ -5,7 +5,6 @@ import ru.nikkollaii.bricks.Pair;
 import ru.nikkollaii.bricks.Replace;
 import ru.nikkollaii.bricks.command.Command;
 import ru.nikkollaii.bricks.state.State;
-import ru.nikkollaii.executors.ExecutorCommand;
 import ru.nikkollaii.executors.ExecutorCommandLocal;
 import ru.nikkollaii.preprocessor.IPreprocessor;
 import ru.nikkollaii.preprocessor.Preprocessor_v1;
@@ -21,7 +20,7 @@ public class Parser_v1 extends Replace implements IParser {
     private Map<String, File> include_file;
     private Map<String, Pair<File, Map<String, String>>> include;
     private IPreprocessor preprocessor;
-    private ExecutorCommand executor_line;
+    private ExecutorCommandLocal executor_line;
     private int gen = 0;
 
     Parser_v1() {

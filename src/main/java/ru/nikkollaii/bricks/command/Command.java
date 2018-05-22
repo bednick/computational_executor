@@ -1,7 +1,7 @@
 package ru.nikkollaii.bricks.command;
 
 import ru.nikkollaii.bricks.Pair;
-import ru.nikkollaii.executors.ExecutorCommand;
+import ru.nikkollaii.executors.ExecutorCommandLocal;
 import ru.nikkollaii.libra.ILibraCommand;
 
 import java.util.HashMap;
@@ -12,8 +12,8 @@ import java.util.concurrent.BlockingQueue;
  *
  */
 
-public class Command implements ICommand<ExecutorCommand> {
-    private ExecutorCommand executor;
+public class Command implements ICommand<ExecutorCommandLocal> {
+    private ExecutorCommandLocal executor;
     private String command;
     private Map<String, String> marks = null;
     private float weight = 0;
@@ -29,7 +29,7 @@ public class Command implements ICommand<ExecutorCommand> {
     }
 
     @Override
-    public void setExecutor(ExecutorCommand executor) {
+    public void setExecutor(ExecutorCommandLocal executor) {
         this.executor = executor;
     }
 
